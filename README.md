@@ -24,3 +24,26 @@ Remarks
 * 'Wi-Fi ID' is stored as ethernet
 * Entries without an ethernet address are not stored
 * ipv4conf is undetermined when the ipv4 configuration is 'Off' in the user interface.
+
+Configuration
+-------------
+
+VLANS
+
+Plot VLANS by providing an array with labels and
+a partial IP address of the routers. Specify multiple partials in array
+if you want to group them together.
+The router IP adress part is queried with SQL LIKE
+Examples:
+```
+VLAN_LABELS='WIRED, WIFI, PRIVATE'
+
+VLAN_RANGES_WIRED='211.88.10.1'
+VLAN_NAME_WIRED='Wired Network'
+
+VLAN_RANGES_WIFI='211.88.12.1, 211.88.13.1'
+VLAN_NAME_WIFI='WiFi'
+
+VLAN_RANGES_PRIVATE='10.%, 192.168.%'
+VLAN_NAME_PRIVATE='Private Range'
+```
