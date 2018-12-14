@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * Network module class
  *
@@ -16,7 +18,7 @@ class Network_controller extends Module_controller
         $this->module_path = dirname(__FILE__);
         
         // Add local config
-        configAppendFile(__DIR__ . '/config.php');
+        configAppendFile(__DIR__ . '/config.php', 'network');
     }
 
     /**
@@ -52,7 +54,12 @@ class Network_controller extends Module_controller
         }
 
         if (! $router_arr) { // Empty array, fall back on default ip ranges
-            $router_arr = conf('ipv4routers', array());
+          try {
+              $router_arr = Yaml::parseFile(conf('network')['router_config_path']);
+          } catch (\Exception $e) {
+             // Do something
+             $router_arr = [];
+          }
         }
         
         $out = array();

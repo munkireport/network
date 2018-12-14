@@ -34,16 +34,33 @@ Plot VLANS by providing an array with labels and
 a partial IP address of the routers. Specify multiple partials in array
 if you want to group them together.
 The router IP adress part is queried with SQL LIKE
-Examples:
+
+### Configuration file:
+
+The configuration has to be a YAML file and is loaded from: 
+
+`local/module_configs/ipv4routers.yml`
+
+You can override this file by specifying the following variable:
+
+`NETWORK_ROUTER_CONFIG_PATH=/path/to/custom/config`
+
+Example:
 ```
-VLAN_LABELS='WIRED, WIFI, PRIVATE'
-
-VLAN_RANGES_WIRED='211.88.10.1'
-VLAN_NAME_WIRED='Wired Network'
-
-VLAN_RANGES_WIFI='211.88.12.1, 211.88.13.1'
-VLAN_NAME_WIFI='WiFi'
-
-VLAN_RANGES_PRIVATE='10.%, 192.168.%'
-VLAN_NAME_PRIVATE='Private Range'
+Wired: 211.88.10.1
+WiFi:
+    - 211.88.12.1
+    - 211.88.13.1
+'Private range':
+    - 10.%
+    - 192.168.%
+    - 172.16.%
+    - 172.17.%
+    - 172.18.%
+    - 172.19.%
+    - 172.2_.%
+    - 172.30.%
+    - 172.31.%
+Link-local:
+    - 169.254.%
 ```
