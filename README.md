@@ -43,7 +43,7 @@ The configuration has to be a YAML file and is loaded from:
 
 You can override this file by specifying the following variable:
 
-`NETWORK_ROUTER_CONFIG_PATH=/path/to/custom/config`
+`NETWORK_ROUTER_CONFIG_PATH=/path/to/custom/config.yml`
 
 Example:
 ```
