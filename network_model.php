@@ -21,6 +21,14 @@ class Network_model extends \Model
         $this->rs['ipv6ip'] = ''; // IPv6 address as string
         $this->rs['ipv6prefixlen'] = 0; // IPv6 prefix length as int
         $this->rs['ipv6router'] = '';  // IPv6 router address as string
+        $this->rs['ipv4dns'] = '';  // IPv4 DNS address(es) as string
+        $this->rs['externalip'] = '';  // External IP address as string
+        $this->rs['vlans'] = '';  // VLANs on service as string
+        $this->rs['activemtu'] = 0;  // Active MTU as int
+        $this->rs['validmturange'] = '';  // Range of valid MTUs as string
+        $this->rs['currentmedia'] = '';  // Current media as string
+        $this->rs['activemedia'] = '';  // Active media as string
+        $this->rs['searchdomain'] = '';  // Search domain(s) 
 
         return $this;
     }
@@ -39,9 +47,17 @@ class Network_model extends \Model
             'Client ID: ' => 'clientid',
             'Wi-Fi ID: ' => 'ethernet',
             'IP address: ' => 'ipv4ip',
+            'DNS: ' => 'ipv4dns',
+            'External IP: ' => 'externalip',
+            'Search Domain: ' => 'searchdomain',
             'Subnet mask: ' => 'ipv4mask',
             'Router: ' => 'ipv4router',
             'IPv6: ' => 'ipv6conf',
+            'VLANs: ' => 'vlans',
+            'Active MTU: ' => 'activemtu',
+            'Valid MTU Range: ' => 'validmturange',
+            'Current: ' => 'currentmedia',
+            'Active: ' => 'activemedia',
             'IPv6 IP address: ' => 'ipv6ip',
             'IPv6 Prefix Length: ' => 'ipv6prefixlen',
             'IPv6 Router: ' => 'ipv6router');
@@ -50,10 +66,10 @@ class Network_model extends \Model
         // Unfortunately you cannot detect if IPv4 is off with
         // netwerksetup -getinfo
         $ipv4conf = array(
-            'DHCP Configuration' => 'dhcp',
-            'Manually Using DHCP Router Configuration' => 'manual',
-            'BOOTP Configuration' => 'bootp',
-            'Manual Configuration' => 'manual');
+            'DHCP Configuration' => 'DHCP',
+            'Manually Using DHCP Router Configuration' => 'Manual',
+            'BOOTP Configuration' => 'BOOTP',
+            'Manual Configuration' => 'Manual');
         
         $services = array();
         $order = 1; // Service order
@@ -100,9 +116,9 @@ class Network_model extends \Model
         // Delete previous entries
         $this->deleteWhere('serial_number=?', $this->serial_number);
 
-        // Now only store entries with a valid ethernet address
+        // Now only store entries with a valid ethernet address or have a valid IP address
         foreach ($services as $service => $data) {
-            if ($data['ethernet'] && strlen($data['ethernet']) == 17) {
+            if (($data['ethernet'] && strlen($data['ethernet']) == 17) || strpos($data['ipv4ip'], '.') || strpos($data['ipv6ip'], ':') ) {
                 $this->merge($data);
                 $this->id = '';
                 $this->service = $service;

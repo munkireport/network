@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import socket, struct
+import re
 
 network_service_list = []
 
@@ -11,16 +12,83 @@ def bashCommand(script):
     try:
         return subprocess.check_output(script)
     except (subprocess.CalledProcessError, OSError), err:
-        return "[* Error] **%s** [%s]" % (err, str(script))
+        if "-getMTU" in script:
+            return "Active MTU: "
+        elif "-listvalidMTUrange" in script:
+            return "Valid MTU Range: "
+        elif "-getmedia" in script:
+            return "Current: \nActive: "
+        else:
+            return "[* Error] **%s** [%s]" % (err, str(script))
+        
+def get_external_ip():
+    
+    cmd = ['/usr/bin/curl', '--connect-timeout', '5', 'https://api.ipify.org']
+    proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                            stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (output, unused_error) = proc.communicate()
+    try:
+        return "External IP: "+output
+    except Exception:
+        return ""
+    
+def get_dns():
+    
+    cmd = ['/bin/cat', '/etc/resolv.conf']
+    proc = subprocess.Popen(cmd, shell=False, bufsize=-1,
+                            stdin=subprocess.PIPE,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (output, unused_error) = proc.communicate()
+    try:
+        return output
+    except Exception:
+        return ""
 
 def get_network_info():
+    # Get external IP only once
+    external_ip = get_external_ip()
+    
+    # Get global DNS only once
+    dns_info = get_dns()
+
+    # Get list of network services/interfaces
     networkservices = bashCommand(['/usr/sbin/networksetup', '-listallnetworkservices']).split('\n')[:-1]
     for network in networkservices:
+        dns = "DNS: "
+        search = "Search Domain: "
         if "asterisk" in network:
             pass
         else:
             network_service_list.append('Service: %s' % network)
             network_info = bashCommand(['/usr/sbin/networksetup', '-getinfo', network]).split('\n')[:-1]
+            
+            if any("Subnet mask" in s for s in network_info):
+                network_info.append(external_ip)
+                nameservers = dns_info.split('\n')[:-1]
+                for searchdomain in nameservers:
+                    if "search " in searchdomain or "domain " in searchdomain:
+                        search = search + re.sub('domain ','', re.sub('search ','', searchdomain))+", "
+                network_info.append(search[:-2])
+            
+            getdns = bashCommand(['/usr/sbin/networksetup', '-getdnsservers', network])
+            if "There aren't any DNS Servers set on " in getdns:
+                if any("Subnet mask" in s for s in network_info):
+                    for nameserver in nameservers:
+                        if "nameserver " in nameserver:
+                            dns = dns + re.sub('nameserver ','', nameserver)+", "
+                    network_info.append(dns[:-2])
+            else:
+                dns = "DNS: "+re.sub("There aren't any DNS Servers set on "+network+".","",re.sub('\n',', ',getdns))
+                network_info.append(dns[:-2])
+            
+            network_info.append("VLANS: "+re.sub("There are no VLANs currently configured on this system.","",re.sub('\n',', ',bashCommand(['/usr/sbin/networksetup', '-listVLANs'])))[:-2])
+            mtudata = bashCommand(['/usr/sbin/networksetup', '-getMTU', network])[:-1]
+            if "Current Setting" in mtudata:
+                network_info.append("Active MTU: "+re.sub('[^0-9]','', re.sub("[\(\[].*?[\)\]]", "", mtudata)))
+            network_info.append(bashCommand(['/usr/sbin/networksetup', '-listvalidMTUrange', network])[:-1])
+            network_info.append(re.sub('>',')', re.sub('<','(', bashCommand(['/usr/sbin/networksetup', '-getmedia', network])[:-1])))
+            network_info.append("Network Location: "+bashCommand(['/usr/sbin/networksetup', '-getcurrentlocation'])[:-1])
             for info in network_info:
                 network_service_list.append(info)
 

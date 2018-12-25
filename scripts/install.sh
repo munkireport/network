@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# filevault_status_controller
+# network_controller
 NW_CTL="${BASEURL}index.php?/module/network/"
 
 # remove the previous networkinfo.sh if installed
