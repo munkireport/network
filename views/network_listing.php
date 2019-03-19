@@ -8,36 +8,32 @@ new Network_model;
 ?>
 
 <div class="container">
-
   <div class="row">
-
   	<div class="col-lg-12">
-
-		  <h3><span data-i18n="network.report"></span> <span id="total-count" class='label label-primary'>…</span></h3>
-
-		  <table class="table table-striped table-condensed table-bordered">
-		    <thead>
-		      <tr>
-		      	<th data-i18n="listing.computername" data-colname='machine.computer_name'></th>
-		        <th data-i18n="serial" data-colname='reportdata.serial_number'></th>
-		        <th data-i18n="username" data-colname='reportdata.long_username'></th>
-		        <th data-i18n="network.service" data-colname='network.service'></th>
-		        <th data-i18n="status" data-colname='network.status'></th>
-		        <th data-i18n="network.ethernet" data-colname='network.ethernet'></th>
-		        <th data-i18n="network.ip_address" data-colname='network.ipv4ip'></th>
-		        <th data-i18n="network.dns" data-colname='network.ipv4dns'></th>
-		        <th data-i18n="network.router" data-colname='network.ipv4router'></th>
-		        <th data-i18n="network.externalip" data-colname='network.externalip'></th>
-		        <th data-i18n="network.mask" data-colname='network.ipv4mask'></th>
-		        <th data-i18n="network.activemedia" data-colname='network.activemedia'></th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		    	<tr>
-					<td data-i18n="listing.loading" colspan="12" class="dataTables_empty"></td>
-				</tr>
-		    </tbody>
-		  </table>
+      <h3><span data-i18n="network.report"></span> <span id="total-count" class='label label-primary'>…</span></h3>
+      <table class="table table-striped table-condensed table-bordered">
+        <thead>
+          <tr>
+            <th data-i18n="listing.computername" data-colname='machine.computer_name'></th>
+            <th data-i18n="serial" data-colname='reportdata.serial_number'></th>
+            <th data-i18n="username" data-colname='reportdata.long_username'></th>
+            <th data-i18n="network.service" data-colname='network.service'></th>
+            <th data-i18n="status" data-colname='network.status'></th>
+            <th data-i18n="network.ethernet" data-colname='network.ethernet'></th>
+            <th data-i18n="network.ip_address" data-colname='network.ipv4ip'></th>
+            <th data-i18n="network.dns" data-colname='network.ipv4dns'></th>
+            <th data-i18n="network.router" data-colname='network.ipv4router'></th>
+            <th data-i18n="network.externalip" data-colname='network.externalip'></th>
+            <th data-i18n="network.mask" data-colname='network.ipv4mask'></th>
+            <th data-i18n="network.activemedia" data-colname='network.activemedia'></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="listing.loading" colspan="12" class="dataTables_empty"></td>
+          </tr>
+        </tbody>
+      </table>
     </div> <!-- /span 12 -->
   </div> <!-- /row -->
 </div>  <!-- /container -->
