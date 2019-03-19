@@ -20,4 +20,4 @@ fi
 chmod a+x "${MUNKIPATH}preflight.d/networkinfo.py"
 
 # Set preference to include this file in the preflight check
-setreportpref "network" "${CACHEPATH}networkinfo.txt"
+setreportpref "network" "${CACHEPATH}networkinfo.plist"

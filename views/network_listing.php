@@ -79,7 +79,10 @@ new Network_model;
 	    oTable = $('.table').dataTable( {
             ajax: {
                 url: appUrl + '/datatables/data',
-                type: "POST"
+                type: "POST", 
+                data: function(d){
+                     d.mrColNotEmpty = "ipv4ip IS NOT NULL or ethernet";
+                }
             },
             dom: mr.dt.buttonDom,
             buttons: mr.dt.buttons,
@@ -95,14 +98,15 @@ new Network_model;
 
 	        	// Status
 	        	var status=$('td:eq(4)', nRow).html();
-	        	status = status == 1 ? '<span class="label label-success">'+i18n.t('enabled')+'</span>' :
-	        	(status === '0' ? '<span class="label label-danger">'+i18n.t('disabled')+'</span>' : '')
+	        	status = status == 1 ? '<span class="label label-success">'+i18n.t('connected')+'</span>' :
+	        	(status === '0' ? '<span class="label label-danger">'+i18n.t('disconnected')+'</span>' : '')
 	        	$('td:eq(4)', nRow).html(status)
                 
                 // Active Media
 	        	var colvar=$('td:eq(11)', nRow).html();
 	        	colvar = colvar == 'none' ? '' :
 	        	colvar = colvar == 'not set' ? i18n.t('network.notset') :
+	        	colvar = colvar == 'autoselect' ? i18n.t('network.autoselect') :
 	        	colvar = colvar == 'autoselect (half-duplex)' ? i18n.t('network.autoselecthalf') :
 	        	(colvar === 'autoselect (full-duplex)' ? i18n.t('network.autoselectfull') : colvar)
 	        	$('td:eq(11)', nRow).html(colvar)

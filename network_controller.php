@@ -120,7 +120,7 @@ class Network_controller extends Module_controller
         
         $queryobj = new Network_model();
         
-        $sql = "SELECT service, `order`, status, ethernet, clientid, ipv4conf, ipv4ip, ipv4dns, ipv4mask, ipv4router, ipv6conf, ipv6ip, ipv6prefixlen, ipv6router, vlans, activemtu, validmturange, currentmedia, activemedia, externalip
+        $sql = "SELECT service, bsd_interface, `order`, status, ethernet, clientid, searchdomain, ipv4conf, ipv4ip, ipv4dns, ipv4mask, ipv4router, ipv4switchmacaddress, ipv4destaddresses, ipv6clientid, ipv6conf, ipv6ip, ipv6prefixlen, ipv6router, ipv6switchmacaddress, ipv6destaddresses, vpnservername, vpnserveraddress, overrideprimary, ipv6vpnservername, ipv6vpnserveraddress, ipv6coverrideprimary, dhcp_domain_name, dhcp_domain_name_servers, dhcp_routers, dhcp_server_identifier, dhcp_subnet_mask, location, netbiosname, workgroup, vlans, activemtu, validmturange, currentmedia, activemedia, externalip, supported_channels, supported_phymodes, wireless_card_type, firmware_version, country_code, wireless_locale, airdrop_channel, airdrop_supported, wow_supported
                         FROM network 
                         WHERE serial_number = '$serial_number'";
         
