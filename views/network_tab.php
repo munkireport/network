@@ -141,6 +141,17 @@ $(document).on('appReady', function(){
                                 .addClass('table table-striped table-condensed')
                                 .append($('<tbody>')
                                     .append(rows))))
+                } else if (d.service.indexOf("bond") !=-1){
+                    $('#network-tab')
+                        .append($('<h4>')
+                            .append($('<i>')
+                                .addClass('fa fa-pause'))
+                            .append(' '+d.service))
+                        .append($('<div style="max-width:550px;">')
+                            .append($('<table>')
+                                .addClass('table table-striped table-condensed')
+                                .append($('<tbody>')
+                                    .append(rows))))
                 } else if (d.service.indexOf("Bluetooth") !=-1){
                     $('#network-tab')
                         .append($('<h4>')
