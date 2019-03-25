@@ -77,7 +77,7 @@ new Network_model;
                 url: appUrl + '/datatables/data',
                 type: "POST", 
                 data: function(d){
-                     d.mrColNotEmpty = "ipv4ip IS NOT NULL or ethernet";
+                    d.mrColNotEmpty = "ethernet";
                 }
             },
             dom: mr.dt.buttonDom,
