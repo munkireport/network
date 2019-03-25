@@ -134,8 +134,11 @@ def get_network_info():
             
         out.append(device)
         
-    # Check for and add tuns/vmnets
-    out = out + get_tunnel_info() + get_vmnet_info()
+        # Run ifconfig so we only have to run it once
+        ifconfig_data = bashCommand(['/sbin/ifconfig']).split('\n')
+        
+    # Check for and add bond, tuns, and vmnets
+    out = out + get_bond_info(ifconfig_data) + get_tunnel_info(ifconfig_data) + get_vmnet_info(ifconfig_data)
 
     return out           
                 
@@ -164,7 +167,7 @@ def get_additional_info(interface):
 
     current_media = re.sub('Current: ','',''.join(bashCommand(['/usr/sbin/networksetup', '-getmedia', interface]).split('\n')[:1])).strip()
     if current_media != "" and "Could not find hardware port or device named" not in current_media:
-        network["current"] = current_media
+        network["currentmedia"] = current_media
 
     vlan_data = re.sub("There are no VLANs currently configured on this system.","",re.sub('\n',', ',bashCommand(['/usr/sbin/networksetup', '-listVLANs'])))[:-2]
     if vlan_data != "":
@@ -188,9 +191,44 @@ def get_external_ip():
     except Exception:
         return ""
     
-def get_tunnel_info():
+def get_bond_info(ifconfig_data):
+    # Bond, James Bond
     try:
-        utun_adapters = bashCommand(['/sbin/ifconfig']).split('\n')
+        bond_adapters = ifconfig_data
+        bonds = []
+        
+        for bond_adapter in bond_adapters:
+            if "bond" in bond_adapter and ": flags=" in bond_adapter:
+                adapter = bond_adapter.split(': flags=')[0].strip()
+                bond = {'status':0}
+                bond_ip = bashCommand(['/sbin/ifconfig', adapter])
+                bond_lines = bond_ip.split('\n')
+
+                for bond_line in bond_lines:
+                    if "inet" in bond_line and "inet6" not in bond_line:
+                        bond['ipv4ip'] = ''.join(re.sub('	inet ','',bond_line).split(' ')[0]).strip()
+                        bond['service'] = adapter
+                        bond['status'] = 1
+                    elif "inet6" in bond_line and "fe80::" not in bond_line:
+                        bond['ipv6ip'] = ''.join(re.sub('	inet6 ','',bond_line).split(' ')[0]).strip()
+                        bond['service'] = adapter
+                        bond['status'] = 1
+                    elif "ether" in bond_line:
+                        bond['ethernet'] = re.sub('	ether ','',bond_line).split(' ')[0].strip().upper()
+                    elif "mtu" in bond_line:
+                        bond["activemtu"] = re.sub('[^0-9]','', bond_line.split(' mtu ')[-1])
+                    elif "media: " in bond_line:
+                        bond['activemedia'] = re.sub('\)','', re.sub('\(','left_para', bond_line).split('left_para')[1]) # tbase
+                        bond['currentmedia'] = re.sub('	media:','', bond_line.split(' ')[1]) # autoselect
+                bonds.append(bond)
+        return filter(None, bonds)
+
+    except:
+        return []
+    
+def get_tunnel_info(ifconfig_data):
+    try:
+        utun_adapters = ifconfig_data
         utuns = []
 
         for utun_adapter in utun_adapters:
@@ -218,9 +256,9 @@ def get_tunnel_info():
     except:
         return []
 
-def get_vmnet_info():
+def get_vmnet_info(ifconfig_data):
     try:
-        vmnet_adapters = bashCommand(['/sbin/ifconfig']).split('\n')
+        vmnet_adapters = ifconfig_data
         vmnets = []
         
         for vmnet_adapter in vmnet_adapters:
