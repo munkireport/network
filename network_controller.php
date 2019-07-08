@@ -63,7 +63,7 @@ class Network_controller extends Module_controller
         }
         
         $out = array();
-        $reportdata = new Reportdata_model();
+        $reportdata = new \Model();
 
         // Compile SQL
         $cnt = 0;
