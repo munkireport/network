@@ -8,7 +8,7 @@ $this->view('listings/default',
 			"column" => "machine.computer_name",
 			"i18n_header" => "listing.computername",
 			"formatter" => "clientDetail",
-			"tab_link" => "displays-tab",
+			"tab_link" => "network-tab",
 		],
 		[
 			"column" => "reportdata.serial_number",
