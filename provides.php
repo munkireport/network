@@ -1,6 +1,9 @@
 <?php
 
 return array(
+    'detail_widgets' => [
+        'network_detail' => ['view' => 'network_detail_widget'],
+    ],
     'client_tabs' => array(
         'network-tab' => array('view' => 'network_tab', 'i18n' => 'network.network', 'badge' => 'network-cnt'),
     ),
