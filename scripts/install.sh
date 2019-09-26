@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# filevault_status_controller
+# network_controller
 NW_CTL="${BASEURL}index.php?/module/network/"
 
 # remove the previous networkinfo.sh if installed
@@ -20,4 +20,4 @@ fi
 chmod a+x "${MUNKIPATH}preflight.d/networkinfo.py"
 
 # Set preference to include this file in the preflight check
-setreportpref "network" "${CACHEPATH}networkinfo.txt"
+setreportpref "network" "${CACHEPATH}networkinfo.plist"
