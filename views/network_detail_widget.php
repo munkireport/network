@@ -7,6 +7,5 @@
         <tr>
             <th data-i18n="network.hostname"></th><td class="mr-hostname"></td>
         </tr>
-        </tr>
     </table>
 </div>
