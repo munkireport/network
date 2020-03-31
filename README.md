@@ -14,7 +14,7 @@ Remarks
 Configuration
 -------------
 
-###VLANS
+### VLANS
 
 Plot VLANS by providing an array with labels and a partial IP address of the routers. Specify multiple partials in array
 if you want to group them together.
