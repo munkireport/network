@@ -9,7 +9,6 @@
     "router": "Routeur",
     "service": "Service",
     "tab": "Interfaces réseau",
-    "network": "Réseau",
     "report": "Rapport Réseau",
     "widget": {
         "network_location": "Emplacements réseau",
