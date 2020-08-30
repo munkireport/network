@@ -175,6 +175,11 @@ class Network_model extends \Model
                     if ( ! array_key_exists($item, $service) || $service[$item] == '' && $service[$item] != '0') {
                         $this->$item = null;
 
+                    // IPv6 IP address can be long arrays
+                    } else if ($item == 'ipv6ip' && strpos($service[$item], ',') !== false) {
+                        $ipv6_array = explode(",", $service[$item]);
+                        $this->$item = $ipv6_array[0];
+
                     // Set the db fields to be the same as those in service
                     } else {
                         $this->$item = $service[$item];
