@@ -23,6 +23,7 @@ class Network_model extends \Model
         $this->rs['ipv6prefixlen'] = 0; // IPv6 prefix length as int
         $this->rs['ipv6router'] = '';  // IPv6 router address as string
         $this->rs['ipv4dns'] = '';  // IPv4 DNS address(es) as string
+        $this->rs['externalip'] = '';  // External IP address as string
         $this->rs['vlans'] = '';  // VLANs on service as string
         $this->rs['activemtu'] = 0;  // Active MTU as int
         $this->rs['validmturange'] = '';  // Range of valid MTUs as string
@@ -83,6 +84,7 @@ class Network_model extends \Model
                 'Wi-Fi ID: ' => 'ethernet',
                 'IP address: ' => 'ipv4ip',
                 'DNS: ' => 'ipv4dns',
+                'External IP: ' => 'externalip',
                 'Search Domain: ' => 'searchdomain',
                 'Subnet mask: ' => 'ipv4mask',
                 'Router: ' => 'ipv4router',
@@ -170,7 +172,7 @@ class Network_model extends \Model
             
             // Process each service
             foreach ($plist as $service) {
-                foreach (array('service', 'order', 'status', 'ethernet', 'clientid', 'ipv4conf', 'ipv4ip', 'ipv4mask', 'ipv4router', 'ipv6conf', 'ipv6ip', 'ipv6prefixlen', 'ipv6router', 'ipv4dns', 'vlans', 'activemtu', 'validmturange', 'currentmedia', 'activemedia', 'searchdomain', 'ipv4switchmacaddress', 'ipv4destaddresses', 'vpnservername', 'vpnserveraddress', 'overrideprimary', 'ipv6clientid', 'ipv6destaddresses', 'ipv6switchmacaddress', 'ipv6vpnservername', 'ipv6coverrideprimary', 'ipv6vpnserveraddress', 'dhcp_domain_name', 'dhcp_domain_name_servers', 'dhcp_lease_duration', 'dhcp_routers', 'dhcp_server_identifier', 'dhcp_subnet_mask', 'bsd_interface', 'netbiosname', 'workgroup', 'location', 'airdrop_channel', 'airdrop_supported', 'wow_supported', 'supported_channels', 'supported_phymodes', 'wireless_card_type', 'wireless_card_type', 'firmware_version', 'country_code', 'wireless_locale') as $item) {
+                foreach (array('service', 'order', 'status', 'ethernet', 'clientid', 'ipv4conf', 'ipv4ip', 'ipv4mask', 'ipv4router', 'ipv6conf', 'ipv6ip', 'ipv6prefixlen', 'ipv6router', 'ipv4dns', 'externalip', 'vlans', 'activemtu', 'validmturange', 'currentmedia', 'activemedia', 'searchdomain', 'ipv4switchmacaddress', 'ipv4destaddresses', 'vpnservername', 'vpnserveraddress', 'overrideprimary', 'ipv6clientid', 'ipv6destaddresses', 'ipv6switchmacaddress', 'ipv6vpnservername', 'ipv6coverrideprimary', 'ipv6vpnserveraddress', 'dhcp_domain_name', 'dhcp_domain_name_servers', 'dhcp_lease_duration', 'dhcp_routers', 'dhcp_server_identifier', 'dhcp_subnet_mask', 'bsd_interface', 'netbiosname', 'workgroup', 'location', 'airdrop_channel', 'airdrop_supported', 'wow_supported', 'supported_channels', 'supported_phymodes', 'wireless_card_type', 'wireless_card_type', 'firmware_version', 'country_code', 'wireless_locale') as $item) {
                     // If key does not exist in $service, null it
                     if ( ! array_key_exists($item, $service) || $service[$item] == '' && $service[$item] != '0') {
                         $this->$item = null;
