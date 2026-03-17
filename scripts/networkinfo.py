@@ -189,7 +189,7 @@ def get_additional_info(interface):
     network = {}
     mtudata = bashCommand(['/usr/sbin/networksetup', '-getMTU', interface]).decode("utf-8", errors="ignore")
     if "Current Setting" in mtudata and "Error: The parameters were not valid" not in mtudata:
-       network["activemtu"] = re.sub('[^0-9]','', re.sub(r"[\(\[].*?[\)\]]", "", mtudata))
+        network["activemtu"] = re.sub('[^0-9]','', re.sub(r"[\(\[].*?[\)\]]", "", mtudata))
     else:
         return network
 
