@@ -15,4 +15,5 @@ table:
   - {i18n_header: network.router, column: network.ipv4router}
   - {i18n_header: network.externalip, column: network.externalip}
   - {i18n_header: network.mask, column: network.ipv4mask}
+  - {i18n_header: network.order, column: network.order}
   - {i18n_header: network.activemedia, column: network.activemedia}

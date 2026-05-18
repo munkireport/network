@@ -26,7 +26,7 @@ $(document).on('appReady', function(){
                 for (var prop in d){
                     // Skip skipThese
                     if(skipThese.indexOf(prop) == -1){
-                        if (d[prop] == '' || d[prop] == null || d[prop] == "none" || prop == ''){
+                        if ((d[prop] == '' || d[prop] == null || d[prop] == "none" || prop == '') && d[prop] !== 0){
                            // Do nothing for empty values to blank them
                         } else if(prop == 'ipv6prefixlen' && d['ipv6ip'] == 'none'){
                            // Do nothing for IPv6 prefix length when ipv6ip is none
